@@ -9,6 +9,7 @@ import LoginStaff from "./components/Staff/LoginStaff";
 // import RegistrationFormStaffsample from "./components/Dummy/Registrationformstaff";
 
 export default function App() {
+  //test
   return (
     <>
       <Routes>
