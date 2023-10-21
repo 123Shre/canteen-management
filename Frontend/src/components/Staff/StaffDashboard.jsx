@@ -1,11 +1,17 @@
-import React from 'react'
+import React from "react";
+import { Navbar1 } from "../All/Navbar";
+import { Footer } from "../All/Footer";
+import SetMenu from "./SetMenu";
 
 const StaffDashboard = () => {
   return (
-    <div>
-      This is Staff dashBoard
-    </div>
-  )
-}
+    <>
+      <Navbar1 />
+      <h1>Staff Dashboard</h1>
 
-export default StaffDashboard
+      <Footer />
+    </>
+  );
+};
+
+export default StaffDashboard;

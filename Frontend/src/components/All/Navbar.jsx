@@ -5,10 +5,14 @@ import {
   Button,
   IconButton,
   Collapse,
+  
 } from "@material-tailwind/react";
 
 export function Navbar1() {
   const [openNav, setOpenNav] = React.useState(false);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen((cur) => !cur);
 
   React.useEffect(() => {
     window.addEventListener(
@@ -64,15 +68,23 @@ export function Navbar1() {
 
   return (
     <div className="max-h-[768px] w-[calc(100%+48px)] max-w-[99vw] mx-auto relative">
-      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
+      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4 bg-rose-500">
         <div className="flex items-center justify-between text-blue-gray-900">
+          {/* Logo */}
+          <div className="flex ">
+          <img
+            src="/Image/icon.png"
+            className="w-16 h-10 ml-0 "
+            alt="Icon"
+          />
           <Typography
             as="a"
             href="#"
-            className="mr-4 cursor-pointer py-1.5 font-medium"
+            className="ml-2 cursor-pointer py-1.5 font-extrabold "
           >
             Annapurna Canteen Services
           </Typography>
+          </div>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             <Button
@@ -123,9 +135,10 @@ export function Navbar1() {
         </div>
         <Collapse open={openNav}>
           {navList}
-          <Button variant="gradient" size="sm" fullWidth className="mb-2">
+          {/* <Button variant="gradient" size="sm" fullWidth className="mb-2">
             <span>Ordrer Now</span>
-          </Button>
+          </Button> */}
+           <Button onClick={handleOpen}>Sign In</Button>
         </Collapse>
       </Navbar>
     </div>

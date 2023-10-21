@@ -73,7 +73,7 @@ const RegistrationFormStaff = () => {
   return (
     <>
       <Navbar1 />
-      <div className="mt-1">
+      <div className="mt-1" >
         <div className="flex items-center justify-center min-h-screen ">
           <div className="border-black border-2 p-5 rounded-lg">
             <Typography variant="h4" color="red">

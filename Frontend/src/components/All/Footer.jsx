@@ -19,11 +19,11 @@ const currentYear = new Date().getFullYear();
  
 export function Footer() {
   return (
-    <footer className="relative flex flex-col w-full ">
+    <footer className="relative flex flex-col w-full bg-rose-500">
       <div className="mx-auto w-full px-8 max-w-[99vw]">
         <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2">
           <Typography variant="h5" className="mb-6">
-           Annapurna Canteen Servises
+           Annapurna Canteen Services
           </Typography>
           <div className="grid grid-cols-3 justify-between gap-4">
             {LINKS.map(({ title, items }) => (

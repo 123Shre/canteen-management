@@ -1,5 +1,6 @@
 import Staff from "../models/StaffMembers.js";
-import bcrypt from "bcrypt"
+import Menu from "../models/Menu.js";
+import bcrypt from "bcrypt";
 
 const staffMemberController = {
   // create: async (req, res) => {
@@ -39,7 +40,14 @@ const staffMemberController = {
       res.json(err);
     }
   },
-
+  setMenu: async (req, res) => {
+    try {
+      const TodayMenu = await Menu.create(req.body);
+      res.json(TodayMenu);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
   registerStaff: async (req, res) => {
     try {
       const {

@@ -1,3 +1,4 @@
+import Menu from "../models/Menu.js";
 import userModel from "../models/User.js";
 import bcrypt, { hash } from "bcrypt";
 
@@ -8,7 +9,10 @@ const userController = {
       console.log(req.body);
       const userExist = await userModel.findOne({ email });
       if (userExist) {
-        return res.json({status: "failed",  message: "Email already Registered" });
+        return res.json({
+          status: "failed",
+          message: "Email already Registered",
+        });
       }
 
       const users = await userModel.create({
@@ -16,7 +20,10 @@ const userController = {
         email: email,
         password: await hash(password, 10),
       });
-      return res.json({status: "ok", message: "You are successfully Registered" });
+      return res.json({
+        status: "ok",
+        message: "You are successfully Registered",
+      });
       // console.log(users)
     } catch (err) {
       console.log(err);
@@ -30,9 +37,12 @@ const userController = {
 
       //console.log(user);
       if (!user) {
-        return res.json({status: "failed", message: "The Email does not exist"});
+        return res.json({
+          status: "failed",
+          message: "The Email does not exist",
+        });
       }
-/* 
+      /* 
       if (await bcrypt.compare(password, user.password)) {
         return res.json("the password is incorrect");
       } */
@@ -40,12 +50,27 @@ const userController = {
       const isPasswordCorrect = await bcrypt.compare(password, user.password);
       console.log(isPasswordCorrect);
       if (!isPasswordCorrect) {
-        return res.json({status: "failed",message: "Invalid username or password"});
+        return res.json({
+          status: "failed",
+          message: "Invalid username or password",
+        });
       }
 
       return res.json({ status: "ok", message: "success" });
     } catch (err) {
-      res.json({status: "failed",message: err});
+      res.json({ status: "failed", message: err });
+    }
+  },
+  getMenu: async (req, res) => {
+    try {
+      // Find all menu items
+      const menuItems = await Menu.find();
+
+      // Send the menu items back to the client
+      res.json(menuItems);
+    } catch (error) {
+      // Handle the error
+      res.status(500).json(error);
     }
   },
 };

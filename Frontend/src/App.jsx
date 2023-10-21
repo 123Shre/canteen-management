@@ -6,6 +6,10 @@ import DashboardOwner from "./components/Owner/DashboardOwner";
 import { ManageStaff } from "./components/Owner/ManageStaff";
 import RegistrationFormStaff from "./components/Owner/RegistrationFormStaff";
 import LoginStaff from "./components/Staff/LoginStaff";
+import StaffDashboard from "./components/Staff/StaffDashboard";
+import SetMenu from "./components/Staff/SetMenu";
+import ProductForm from "./components/Staff/SetNMenu";
+import ProductPage from "./components/Staff/Card";
 // import RegistrationFormStaffsample from "./components/Dummy/Registrationformstaff";
 
 export default function App() {
@@ -17,9 +21,13 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/loginstaff" element={<LoginStaff />} />
         <Route path="/setraw" element={<SetRawMaterial />} />
-        <Route path="/dashboard" element={<DashboardOwner />} />
+        <Route path="/dashboardown" element={<DashboardOwner />} />
+        <Route path="/dashboardstaff" element={<StaffDashboard />} />
+        <Route path="/setmenu" element={<SetMenu />} />
+        <Route path="/setm" element={<ProductForm />} />
         {/* <Route path="/" element={< RegistrationFormStaffsample/>} /> */}
-        <Route path="/" element={< RegistrationFormStaff/>} />
+        <Route path="/" element={<RegistrationFormStaff />} />
+        <Route path="/dish" element={<ProductPage />} />
       </Routes>
     </>
   );
