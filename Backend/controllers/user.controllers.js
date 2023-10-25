@@ -14,15 +14,17 @@ const userController = {
           message: "Email already Registered",
         });
       }
-
       const users = await userModel.create({
         name: name,
         email: email,
         password: await hash(password, 10),
       });
+
+      const token = generateToken({ userId: users._id });
       return res.json({
         status: "ok",
         message: "You are successfully Registered",
+        accessToken: token,
       });
       // console.log(users)
     } catch (err) {
@@ -71,6 +73,23 @@ const userController = {
     } catch (error) {
       // Handle the error
       res.status(500).json(error);
+    }
+  },
+  verifyToken: async (req, res, next) => {
+    const accessToken = req.headers['authorization'];
+
+    if (!accessToken) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    try {
+      const decoded = await jwt.verify(accessToken, require('../config/jwt.config.js').secret);
+
+      req.user = decoded;
+
+      next();
+    } catch (error) {
+      return res.status(401).json({ message: 'Unauthorized' });
     }
   },
 };

@@ -1,6 +1,7 @@
 import Staff from "../models/StaffMembers.js";
 import Menu from "../models/Menu.js";
 import bcrypt from "bcrypt";
+import Product from "../models/Product.js";
 
 const staffMemberController = {
   // create: async (req, res) => {
@@ -40,12 +41,29 @@ const staffMemberController = {
       res.json(err);
     }
   },
+
   setMenu: async (req, res) => {
+    // try {
+    //   const TodayMenu = await Menu.create(req.body);
+    //   res.json(TodayMenu);
+    // } catch (error) {
+    //   res.status(500).json(error);
+    // }
+
+    console.log(req.body);
+  },
+
+  viewMenu: async (req, res) => {
     try {
-      const TodayMenu = await Menu.create(req.body);
-      res.json(TodayMenu);
-    } catch (error) {
-      res.status(500).json(error);
+      const menu = await Product.find();
+      if (!menu) {
+        res.send("no data");
+        console.log(menu)
+      } else {
+        res.json(menu);
+      }
+    } catch (e) {
+      console.log(e);
     }
   },
   registerStaff: async (req, res) => {

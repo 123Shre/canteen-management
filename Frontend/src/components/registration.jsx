@@ -15,6 +15,7 @@ function RegistrationForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accessToken, setAccessToken] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -27,6 +28,11 @@ function RegistrationForm() {
           name,
           email,
           password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
       );
 
@@ -34,19 +40,24 @@ function RegistrationForm() {
       const data = response.data;
 
       // Return the data
+      if (data.status == "ok") {
+        localStorage.setItem('accessToken', data.accessToken);
+        navigate("/login");
+      } else if (data.status == "failed") {
+        // Handle the error here.
+        console.log(data.message);
+      }
       // console.log(data);
       if (data.status == "ok") {
         <Alert color="green">A success alert for showing message.</Alert>;
+        localStorage.setItem('accessToken', data.accessToken);
         navigate("/login");
       }
       else if(data.status=="failed"){
         <Alert color="green">Email already Registered</Alert>;
       } 
       else {
-        <Alert color="red">{data.message}</Alert> ;
-
-     
-      }
+        <Alert color="red">{data.message}</Alert> ;}
       // return data;
     } catch (error) {
       // Handle the error here.

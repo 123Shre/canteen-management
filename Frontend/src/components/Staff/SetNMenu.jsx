@@ -1,59 +1,64 @@
 import React, { useState } from "react";
 // import SelectInputControl from "./selectControl";
 import axios from "axios";
-// import Cookies from "js-cookie";
-
-
+import Cookies from "js-cookie";
 
 function ProductForm() {
   const [productName, setProductName] = useState("");
-  //const [productCategory, setProductCategory] = useState("");
-  const [productMaterial, setProductMaterial] = useState("");
-  const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState("");
-  const [productPicture, setProductPicture] = useState(null);
+  const [productPicture, setProductPicture] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [productQuantity, setproductQuantity] = useState("");
 
-  const handleSelectChange = (event) => {
-    setSelectedCategory(event.target.value);
+  console.log(productPicture);
+  const token = Cookies.get("token");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("productName", productName);
+      formData.append("productPrice", productPrice);
+    //   formData.append("productPicture", productPicture);
+      formData.append("selectedCategory", selectedCategory);
+      formData.append("productQuantity", productQuantity);
+      const response = await axios.post(
+        "http://localhost:3001/staff/setmenu",
+        formData,
+        {
+          headers: { Authorization: localStorage.getItem("token") ,
+          "Content-Type": "multipart/form-data",},
+        }
+      );
+
+      // Handle the successful response here.
+      const data = response.data;
+      console.log(productName + productPrice);
+      if (data.status === "ok") {
+        alert("data added successfully");
+        // You can also reset the form fields if needed.
+        setProductName("");
+        setProductPrice("");
+        // setProductPicture(null);
+        setSelectedCategory("");
+        setproductQuantity("");
+      } else {
+        // Handle other cases, such as validation errors or failure.
+        // For example, setting an error message state variable.
+        console.log("Failed to add the product. Please try again.");
+      }
+    } catch (error) {
+      // Handle the error here, for example, setting an error message.
+      console.log(error);
+      console.log("An error occurred. Please try again later.");
+    }
   };
 
-  const handleFileChange = (e) => {
-    setProductPicture(e.target.files[0]);
-  };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const token = await Cookies.get("authToken");
-
-//     const headers =  {
-//       "Content-Type": "multipart/form-data",
-//       authorization: token // Set the content type for file uploads
-//     }
-
-
- 
-  
-//     try {
-//       const response = await axios.post('/api/addNewProduct', formData, {headers});
-//       console.log(response);
-//       if (response.data.status == "ok") {
-//         alert("Product added successfully!");
-//         // You can redirect or perform other actions upon successful submission
-//       } else {
-//         alert("Failed to add the product. Please try again.");
-//       }
-//     } catch (error) {
-//       console.log('Error:', error);
-//       alert("An error occurred. Please try again later.");
-//     }
-//   };
   return (
-    //box-shadow:
     <>
       <form
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
+        method="post"
         className="w-[900px] mx-auto bg-[#fff] px-4 py-2 rounded mt-4 border center"
         style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
       >
@@ -83,7 +88,7 @@ function ProductForm() {
               />
             </div>
 
-            <div className="mb-4 w-full">
+            {/* <div className="mb-4 w-full">
               <label
                 htmlFor="productPicture"
                 className="block text-gray-600 text-sm font-bold mb-2"
@@ -93,9 +98,10 @@ function ProductForm() {
               <input
                 type="file"
                 id="productPicture"
-                onChange={handleFileChange}
+                name="image"
+                onChange={(e) => setProductPicture(e.target.files[0])}
                 className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-400 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-900"
-                accept="image/*"
+                // accept="image/*"
               />
               {productPicture && (
                 <img
@@ -104,9 +110,7 @@ function ProductForm() {
                   className="mt-2 max-w-[100px] h-auto"
                 />
               )}
-            </div>
-
-       
+            </div> */}
           </div>
           <div className="max-w-[430px] min-w-[400px]">
             <div className="mb-4 w-full">
@@ -114,20 +118,20 @@ function ProductForm() {
                 htmlFor="selectOption"
                 className="block text-gray-600 text-sm font-bold mb-2"
               >
-                Select Option
+                Select Category
               </label>
               <select
                 id="selectOption"
                 name="selectOption"
                 value={selectedCategory}
-                onChange={handleSelectChange}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-400 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-900"
                 required
               >
                 <option value="">Select an Category</option>
-                <option value="Painting">Vegetarian</option>
-                <option value="Sculpture">Eggetarian</option>
-                <option value="Collectibles">Non Vegetarian</option>
+                <option value="Veg">Vegetarian</option>
+                <option value="Eggi">Eggetarian</option>
+                <option value="Non-Veg">Non Vegetarian</option>
               </select>
             </div>
 
@@ -145,6 +149,23 @@ function ProductForm() {
                 onChange={(e) => setProductPrice(e.target.value)}
                 className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-400 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-900"
                 placeholder="Product Price"
+                required
+              />
+            </div>
+            <div className="mb-4 w-full">
+              <label
+                htmlFor="productQuantity"
+                className="block text-gray-600 text-sm font-bold mb-2"
+              >
+                Product Quantity
+              </label>
+              <input
+                type="number"
+                id="productQuantity"
+                value={productQuantity}
+                onChange={(e) => setproductQuantity(e.target.value)}
+                className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-400 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-900"
+                placeholder="Product Quantity"
                 required
               />
             </div>

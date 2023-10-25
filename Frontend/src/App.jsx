@@ -23,8 +23,8 @@ export default function App() {
         <Route path="/setraw" element={<SetRawMaterial />} />
         <Route path="/dashboardown" element={<DashboardOwner />} />
         <Route path="/dashboardstaff" element={<StaffDashboard />} />
-        <Route path="/setmenu" element={<SetMenu />} />
-        <Route path="/setm" element={<ProductForm />} />
+        {/* <Route path="/setmenu" element={<SetMenu />} /> */}
+        <Route path="/setmenu" element={<ProductForm />} />
         {/* <Route path="/" element={< RegistrationFormStaffsample/>} /> */}
         <Route path="/" element={<RegistrationFormStaff />} />
         <Route path="/dish" element={<ProductPage />} />
