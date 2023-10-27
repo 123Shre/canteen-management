@@ -58,7 +58,7 @@ const userController = {
         });
       }
 
-      return res.json({ status: "ok", message: "success" });
+      return res.json({ status: "ok", message: "success", data: user });
     } catch (err) {
       res.json({ status: "failed", message: err });
     }

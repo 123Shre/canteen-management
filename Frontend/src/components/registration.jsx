@@ -31,7 +31,7 @@ function RegistrationForm() {
         },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         }
       );
@@ -44,7 +44,7 @@ function RegistrationForm() {
         localStorage.setItem('accessToken', data.accessToken);
         navigate("/login");
       } else if (data.status == "failed") {
-        // Handle the error here.
+       
         console.log(data.message);
       }
       // console.log(data);

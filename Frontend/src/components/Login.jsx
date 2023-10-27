@@ -26,9 +26,10 @@ function Login() {
       password,
     }).then((data) => data.data);
 
-   // console.log(resp);
+   console.log(resp);
 
     if (resp.status === "ok") {
+      sessionStorage.setItem("user", JSON.stringify(resp.data));
       alert(resp.message);
       setIsLoggedIn(() => true);
       navigate('/dashboard', {replace: true});

@@ -9,10 +9,12 @@ import productRoutes from "./routes/addmenu.routes.js";
 import multer from "multer";
 import staffMemberController from "./controllers/staffmember.controllers.js";
 import path from "path";
-const upload = multer({ dest: path.join( "/Image") });
+const upload = multer({ dest: path.join("/Image") });
 
-connect("mongodb+srv://shreyashamrutkar138:O59vIdaw6YO6jsQy@cluster0.ddlpdfz.mongodb.net/canteen");
-// connect("mongodb://0.0.0.0:27017/canteen");
+// connect(
+//   "mongodb+srv://shreyashamrutkar138:O59vIdaw6YO6jsQy@cluster0.ddlpdfz.mongodb.net/canteen" 
+// );
+connect("mongodb://0.0.0.0:27017/canteen");
 
 const app = express();
 

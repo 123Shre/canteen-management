@@ -1,240 +1,111 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
-import {
-  Card,
-  CardHeader,
-  Input,
-  Typography,
-  Button,
-  CardBody,
-  Chip,
-  CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Avatar,
-  IconButton,
-  Tooltip,
-} from "@material-tailwind/react";
- 
-const TABS = [
-  {
-    label: "All",
-    value: "all",
-  },
-  {
-    label: "Monitored",
-    value: "monitored",
-  },
-  {
-    label: "Unmonitored",
-    value: "unmonitored",
-  },
-];
- 
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
- 
-const TABLE_ROWS = [
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-    name: "John Michael",
-    email: "john@creative-tim.com",
-    job: "Manager",
-    org: "Organization",
-    online: true,
-    date: "23/04/18",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-    name: "Alexa Liras",
-    email: "alexa@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: false,
-    date: "23/04/18",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-    name: "Laurent Perrier",
-    email: "laurent@creative-tim.com",
-    job: "Executive",
-    org: "Projects",
-    online: false,
-    date: "19/09/17",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-    name: "Michael Levi",
-    email: "michael@creative-tim.com",
-    job: "Programator",
-    org: "Developer",
-    online: true,
-    date: "24/12/08",
-  },
-  {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-    name: "Richard Gran",
-    email: "richard@creative-tim.com",
-    job: "Manager",
-    org: "Executive",
-    online: false,
-    date: "04/10/21",
-  },
-];
- 
-export function ManageStaff() {
+import React, { useContext, useState } from "react";
+import { CartContext } from "../Context/CartContext";
+import { useNavigate } from "react-router-dom";
+import { Alert } from "@material-tailwind/react";
+
+const CartDisplay = () => {
+  const { cartState, dispatch } = useContext(CartContext);
+  const navigate = useNavigate();
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const removeFromCart = (item) => {
+    dispatch({ type: "REMOVE_FROM_CART", payload: item });
+  };
+
+  const increaseQuantity = (item) => {
+    dispatch({ type: "ADD_TO_CART", payload: item });
+  };
+  const decreaseQuantity = (item) => {
+    dispatch({ type: "DECREASE_QUANTITY", payload: item });
+  };
+
+  const calculateTotal = (item) => {
+    return item.productPrice * item.quantity;
+  };
+
+  const calculateCombinedTotal = () => {
+    let combinedTotal = 0;
+    for (const item of cartState.items) {
+      combinedTotal += calculateTotal(item);
+    }
+    return combinedTotal;
+  };
+  const handleBuyNow = () => {
+    // Implement the buy now functionality here
+    // You can clear the cart, initiate the purchase process, or navigate to a checkout page
+    const storedCartData = localStorage.setItem(
+      "cartData",
+      JSON.stringify(cartState.items)
+    );
+
+    const l = localStorage.getItem("cartData");
+    console.log(l.length);
+    if (l.length !== 2) {
+      navigate("/orderlist");
+    } else {
+      setShowErrorAlert(true);
+    }
+
+    dispatch({ type: "CLEAR_CART" }); // Clear the global cart state
+  };
+
   return (
-    <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-8 flex items-center justify-between gap-8">
-          <div>
-            <Typography variant="h5" color="blue-gray">
-              Members list
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal">
-              See information about all members
-            </Typography>
-          </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
-              view all
-            </Button>
-            <Button className="flex items-center gap-3" size="sm">
-              <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
-            </Button>
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                </Tab>
-              ))}
-            </TabsHeader>
-          </Tabs>
-          <div className="w-full md:w-72">
-            <Input
-              label="Search"
-              icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-            />
-          </div>
-        </div>
-      </CardHeader>
-      <CardBody className="overflow-scroll px-0">
-        <table className="mt-4 w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Cart</h2>
+      <ul className="divide-y divide-gray-300">
+        {cartState.items.map((item) => {
+          // alert(item.quantity);
+          return (
+            <li key={item._id} className="py-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold">{item.productName}</p>
+                  <p className="text-gray-600">
+                    &#8377;{item.productPrice} - Quantity: {item.quantity} Total
+                    &#8377;{calculateTotal(item)}
+                  </p>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => removeFromCart(item)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                   >
-                    {head}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {TABLE_ROWS.map(
-              ({ img, name, email, job, org, online, date }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
- 
-                return (
-                  <tr key={name}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Avatar src={img} alt={name} size="sm" />
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {name}
-                          </Typography>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal opacity-70"
-                          >
-                            {email}
-                          </Typography>
-                        </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {job}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {org}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={online ? "online" : "offline"}
-                          color={online ? "green" : "blue-gray"}
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
-          </tbody>
-        </table>
-      </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-      
-        <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
-            Previous
-          </Button>
-          <Button variant="outlined" size="sm">
-            Next
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
+                    Remove
+                  </button>
+                  <button
+                    onClick={() => increaseQuantity(item)}
+                    className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
+                  >
+                    Increase Quantity
+                  </button>
+                  <button
+                    onClick={() => decreaseQuantity(item)}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                  >
+                    Decrease Quantity
+                  </button>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      <p className="text-xl font-semibold mt-4">
+        Combined Total: &#8377;{calculateCombinedTotal()}
+      </p>
+      <button
+        onClick={handleBuyNow}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        Buy Now
+      </button>
+
+      {showErrorAlert && (
+        <Alert color="red" className="mt-4">
+          An error alert for showing message.
+        </Alert>
+      )}
+    </div>
   );
-}
+};
+
+export default CartDisplay;

@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { CartContext } from "../Context/CartContext";
+import CartDisplay from "../Customer/Cart";
 const ProductCard = ({
   productName,
   productMaterial,
@@ -8,9 +10,9 @@ const ProductCard = ({
   productPrice,
   _id,
 }) => {
-  const addToCart = async (productId) => {
-    try {
-    } catch (error) {}
+  const { dispatch } = useContext(CartContext);
+  const addToCart = async (product) => {
+    dispatch({ type: "ADD_TO_CART", payload: product });
   };
 
   return (
@@ -34,7 +36,9 @@ const ProductCard = ({
         </p>
         <button
           className="absolute bottom-4 right-2 add-to-cart font-xl w-[95%] ml-[2.5%] mx-auto border bg-gray-600 hover:bg-brown-300 border-gray-400 rounded px-4 py-2 ring-inset"
-          onClick={addToCart}
+          onClick={() =>
+            addToCart({ _id, productName, productMaterial, productPrice })
+          }
         >
           Add to Cart
         </button>
@@ -81,6 +85,10 @@ const ProductPage = () => {
           <ProductCard key={product._id} {...product} />
         ))}
       </div>
+
+
+
+      <CartDisplay/>
     </>
   );
 };

@@ -10,6 +10,9 @@ import StaffDashboard from "./components/Staff/StaffDashboard";
 import SetMenu from "./components/Staff/SetMenu";
 import ProductForm from "./components/Staff/SetNMenu";
 import ProductPage from "./components/Staff/Card";
+import CartDisplay from "./components/Customer/Cart";
+import OrderSummary from "./components/Customer/Ordrelist";
+// import { CartView } from "./components/Customer/CartView";
 // import RegistrationFormStaffsample from "./components/Dummy/Registrationformstaff";
 
 export default function App() {
@@ -26,8 +29,12 @@ export default function App() {
         {/* <Route path="/setmenu" element={<SetMenu />} /> */}
         <Route path="/setmenu" element={<ProductForm />} />
         {/* <Route path="/" element={< RegistrationFormStaffsample/>} /> */}
-        <Route path="/" element={<RegistrationFormStaff />} />
+        <Route path="/staffform" element={<RegistrationFormStaff />} />
         <Route path="/dish" element={<ProductPage />} />
+        <Route path="cart" element={<CartDisplay />} />
+        {/* <Route path="cartview" element={<CartView />} /> */}
+        <Route path="/orderlist" element={<OrderSummary />} />
+        <Route path="/staffview" element={<ManageStaff />} />
       </Routes>
     </>
   );

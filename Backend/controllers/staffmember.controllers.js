@@ -12,6 +12,17 @@ const staffMemberController = {
   //     res.status(500).json(error);
   //   }
   // },
+
+  getAllStaffMembers: async (req, res) => {
+    try {
+      const staffMembers = await Staff.find(); // Retrieve all staff members from the database
+      res.json(staffMembers); // Respond with the staff members in JSON format
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+
   viewRawFood: async (req, res) => {
     try {
       const staffMember = await Staff.find();
@@ -58,7 +69,7 @@ const staffMemberController = {
       const menu = await Product.find();
       if (!menu) {
         res.send("no data");
-        console.log(menu)
+        console.log(menu);
       } else {
         res.json(menu);
       }
