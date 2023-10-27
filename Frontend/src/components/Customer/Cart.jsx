@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@material-tailwind/react";
+// import AlertDismissible from "../Utility/Alert";
 
 const CartDisplay = () => {
   const { cartState, dispatch } = useContext(CartContext);
@@ -50,6 +51,9 @@ const CartDisplay = () => {
 
   return (
     <div>
+       {showErrorAlert && <Alert open={showErrorAlert} color="red" onClose={() => setShowErrorAlert(false)}>
+        Please select the dish
+      </Alert>}
       <h2 className="text-2xl font-bold mb-4">Cart</h2>
       <ul className="divide-y divide-gray-300">
         {cartState.items.map((item) => {
@@ -99,11 +103,7 @@ const CartDisplay = () => {
         Buy Now
       </button>
 
-      {showErrorAlert && (
-        <Alert color="red" className="mt-4">
-          An error alert for showing message.
-        </Alert>
-      )}
+     
     </div>
   );
 };
