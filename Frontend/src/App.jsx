@@ -9,9 +9,10 @@ import LoginStaff from "./components/Staff/LoginStaff";
 import StaffDashboard from "./components/Staff/StaffDashboard";
 import SetMenu from "./components/Staff/SetMenu";
 import ProductForm from "./components/Staff/SetNMenu";
-import ProductPage from "./components/Staff/Card";
+import {ProductPage} from "./components/Staff/Card";
 import CartDisplay from "./components/Customer/Cart";
 import OrderSummary from "./components/Customer/Ordrelist";
+import ProductList from "./components/Staff/Card2";
 // import { CartView } from "./components/Customer/CartView";
 // import RegistrationFormStaffsample from "./components/Dummy/Registrationformstaff";
 
@@ -21,7 +22,7 @@ export default function App() {
     <>
       <Routes>
         <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/loginstaff" element={<LoginStaff />} />
         <Route path="/setraw" element={<SetRawMaterial />} />
         <Route path="/dashboardown" element={<DashboardOwner />} />
@@ -31,10 +32,11 @@ export default function App() {
         {/* <Route path="/" element={< RegistrationFormStaffsample/>} /> */}
         <Route path="/staffform" element={<RegistrationFormStaff />} />
         <Route path="/dish" element={<ProductPage />} />
-        <Route path="cart" element={<CartDisplay />} />
+        <Route path="/cart" element={<CartDisplay />} />
         {/* <Route path="cartview" element={<CartView />} /> */}
         <Route path="/orderlist" element={<OrderSummary />} />
         <Route path="/staffview" element={<ManageStaff />} />
+        <Route path="/dish2" element={<ProductList/>}/>
       </Routes>
     </>
   );

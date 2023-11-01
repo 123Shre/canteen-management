@@ -18,24 +18,24 @@ const ProductCard = ({
   return (
     <div
       id={_id}
-      className="product-card border w-fit min-w-[250px] border-gray-400 min-h-[400px] max-h-[750px] p-2 m-2 rounded relative "
+      className="product-card border w-fit min-w-[250px] bg-teal-500 border-gray-400 min-h-[400px] max-h-[750px] p-2 m-2 rounded relative " 
     >
       {/* <img className="w-full rounded h-auto" src={url} /> */}
 
-      <div className="product-content w-full">
+      <div className="bg-teal-500 product-content w-full">
         <img className="h-64 w-60 mr-0" src={productPicture}></img>
-        <h3 className="product-company text-lg font-semibold ml-2 mb-1 break-words">
+        <h3 className="product-company bg-teal-500 text-lg font-semibold ml-2 mb-1 break-words">
           {productName}
         </h3>
         <p className="product-model ml-2 mb-1 text-md break-words max-w-[300px]">
           {productMaterial}
         </p>
         <p className=""></p>
-        <p className="price text-xl ml-2 mb-1 font-semibold">
+        <p className="price text-xl ml-2 mb-1 font-semibold bg-teal-500">
           &#8377; {productPrice}
         </p>
         <button
-          className="absolute bottom-4 right-2 add-to-cart font-xl w-[95%] ml-[2.5%] mx-auto border bg-gray-600 hover:bg-brown-300 border-gray-400 rounded px-4 py-2 ring-inset"
+          className="absolute bottom-4 right-2 add-to-cart font-xl w-[95%] ml-[2.5%] mx-auto border bg-orange-500 hover:bg-orange-600 border-gray-400 rounded px-4 py-2 ring-inset"
           onClick={() =>
             addToCart({ _id, productName, productMaterial, productPrice })
           }
@@ -73,7 +73,7 @@ const ProductPage = () => {
 
   return (
     <>
-      <label htmlFor="sort">Sort by Category:</label>
+      {/* <label htmlFor="sort">Sort by Category:</label>
       <select id="sort" value={sortBy} onChange={handleSortChange}>
         <option value="">All</option>
         <option value="Veg">Veg</option>
@@ -84,12 +84,31 @@ const ProductPage = () => {
         {sortedProducts.map((product) => (
           <ProductCard key={product._id} {...product} />
         ))}
+      </div> */}
+
+      <label htmlFor="sort" className="block font-medium text-gray-700">
+        Sort by Category:
+      </label>
+      <select
+        id="sort"
+        value={sortBy}
+        onChange={handleSortChange}
+        className="block w-full mt-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      >
+        <option value="">All</option>
+        <option value="Veg">Veg</option>
+        <option value="Non-Veg">Non-Veg</option>
+        <option value="Eggi">Eggi</option>
+      </select>
+
+      <div className="product-list flex flex-row space-x-4 mt-4">
+        {sortedProducts.map((product) => (
+          <ProductCard key={product._id} {...product} />
+        ))}
       </div>
 
-
-
-      <CartDisplay/>
+      <CartDisplay />
     </>
   );
 };
-export default ProductPage;
+export { ProductCard, ProductPage };

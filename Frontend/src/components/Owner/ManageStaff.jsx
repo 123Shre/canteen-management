@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardHeader, Typography, Button, CardBody, Chip, IconButton, Tooltip } from '@material-tailwind/react';
-import { PencilIcon, UserPlusIcon } from '@heroicons/react/24/solid';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import axios from 'axios'; // Import Axios
+import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardHeader,
+  Typography,
+  Button,
+  CardBody,
+  Chip,
+  IconButton,
+  Tooltip,
+} from "@material-tailwind/react";
+import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import axios from "axios"; // Import Axios
 
-const TABLE_HEAD = ['Member', 'Function', 'Status', 'Employed', ''];
+const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
 export function ManageStaff() {
   const [staffList, setStaffList] = useState([]);
@@ -13,10 +22,13 @@ export function ManageStaff() {
   useEffect(() => {
     const fetchStaffMembers = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/staff/staffview');         setStaffList(response.data);
+        const response = await axios.get(
+          "http://localhost:3001/staff/staffview"
+        );
+        setStaffList(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching staff members:', error);
+        console.error("Error fetching staff members:", error);
         setLoading(false);
       }
     };
@@ -75,14 +87,25 @@ export function ManageStaff() {
               </tr>
             ) : (
               staffList.map((staff) => (
-                <tr key={staff.email} className="p-4 border-b border-blue-gray-50">
+                <tr
+                  key={staff.email}
+                  className="p-4 border-b border-blue-gray-50"
+                >
                   <td>
                     <div className="flex items-center gap-3">
                       <div className="flex flex-col">
-                        <Typography variant="small" color="blue-gray" className="font-normal">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
                           {staff.name}
                         </Typography>
-                        <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-70"
+                        >
                           {staff.email}
                         </Typography>
                       </div>
@@ -90,21 +113,38 @@ export function ManageStaff() {
                   </td>
                   <td>
                     <div className="flex flex-col">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
                         {staff.job}
                       </Typography>
-                      <Typography variant="small" color="blue-gray" className="font-normal opacity-70">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal opacity-70"
+                      >
                         {staff.org}
                       </Typography>
                     </div>
                   </td>
                   <td>
                     <div className="w-max">
-                      <Chip variant="ghost" size="sm" value={staff.online ? 'online' : 'offline'} color={staff.online ? 'green' : 'blue-gray'} />
+                      <Chip
+                        variant="ghost"
+                        size="sm"
+                        value={staff.online ? "online" : "offline"}
+                        color={staff.online ? "green" : "blue-gray"}
+                      />
                     </div>
                   </td>
                   <td>
-                    <Typography variant="small" color="blue-gray" className="font-normal">
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal"
+                    >
                       {staff.date}
                     </Typography>
                   </td>

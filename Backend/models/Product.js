@@ -7,7 +7,7 @@ const productSchema = new Schema({
   productCategory: String,
   productPrice: Number,
   productQuantity: Number,
-  productPicture: String, // Store the file path here
+  productPicture: String, 
 });
 
 const Product = model("Product", productSchema);

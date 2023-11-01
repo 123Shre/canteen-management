@@ -2,6 +2,8 @@ import React, { useState } from "react";
 // import SelectInputControl from "./selectControl";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Navbar1 } from "../All/Navbar";
+import { Footer } from "../All/Footer";
 
 function ProductForm() {
   const [productName, setProductName] = useState("");
@@ -19,27 +21,29 @@ function ProductForm() {
       const formData = new FormData();
       formData.append("productName", productName);
       formData.append("productPrice", productPrice);
-    //   formData.append("productPicture", productPicture);
+      formData.append("productPicture", productPicture);
       formData.append("selectedCategory", selectedCategory);
       formData.append("productQuantity", productQuantity);
       const response = await axios.post(
         "http://localhost:3001/staff/setmenu",
         formData,
         {
-          headers: { Authorization: localStorage.getItem("token") ,
-          "Content-Type": "multipart/form-data",},
+          headers: {
+            Authorization: localStorage.getItem("token"),
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
 
       // Handle the successful response here.
       const data = response.data;
-      console.log(productName + productPrice);
-      if (data.status === "ok") {
+   
+      if (data.status =="ok") {
         alert("data added successfully");
         // You can also reset the form fields if needed.
         setProductName("");
         setProductPrice("");
-        // setProductPicture(null);
+        setProductPicture("");
         setSelectedCategory("");
         setproductQuantity("");
       } else {
@@ -56,10 +60,11 @@ function ProductForm() {
 
   return (
     <>
+      <Navbar1 />
       <form
         onSubmit={handleSubmit}
         method="post"
-        className="w-[900px] mx-auto bg-[#fff] px-4 py-2 rounded mt-4 border center"
+        className="w-[900px] mx-auto bg-[#fff] px-4 py-2 rounded mt-4 mb-10 border center"
         style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
       >
         <p
@@ -88,7 +93,7 @@ function ProductForm() {
               />
             </div>
 
-            {/* <div className="mb-4 w-full">
+            <div className="mb-4 w-full">
               <label
                 htmlFor="productPicture"
                 className="block text-gray-600 text-sm font-bold mb-2"
@@ -101,7 +106,7 @@ function ProductForm() {
                 name="image"
                 onChange={(e) => setProductPicture(e.target.files[0])}
                 className="appearance-none block w-full bg-transparent text-gray-700 border border-gray-400 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-900"
-                // accept="image/*"
+                accept="image/*"
               />
               {productPicture && (
                 <img
@@ -110,7 +115,7 @@ function ProductForm() {
                   className="mt-2 max-w-[100px] h-auto"
                 />
               )}
-            </div> */}
+            </div>
           </div>
           <div className="max-w-[430px] min-w-[400px]">
             <div className="mb-4 w-full">
@@ -171,15 +176,16 @@ function ProductForm() {
             </div>
           </div>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 flex justify-center">
           <button
             type="submit"
-            className="appearance-none block w-full font-semibold text-[#fff] bg-[#0D0D0D] border border-gray-400 rounded py-[10px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-900"
+            className="focus:outline-none mt-6 w-screen text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
           >
             Submit
           </button>
         </div>
       </form>
+      <Footer />
     </>
   );
 }

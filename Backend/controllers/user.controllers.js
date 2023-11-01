@@ -1,12 +1,14 @@
 import Menu from "../models/Menu.js";
 import userModel from "../models/User.js";
 import bcrypt, { hash } from "bcrypt";
+import JWT from "jsonwebtoken";
+import { createSecretToken } from "../utils/SecretToken.js";
 
 const userController = {
   register: async (req, res) => {
     try {
       const { name, email, password } = req.body;
-      console.log(req.body);
+      // console.log(req.body);
       const userExist = await userModel.findOne({ email });
       if (userExist) {
         return res.json({
@@ -20,11 +22,16 @@ const userController = {
         password: await hash(password, 10),
       });
 
-      const token = generateToken({ userId: users._id });
+      // const token = createSecretToken(users._id);
+      // res.cookie("token", token, {
+      //   withCredentials: true,
+      //   httpOnly: false,
+      // });
       return res.json({
         status: "ok",
         message: "You are successfully Registered",
-        accessToken: token,
+        // accessToken: token,
+        users
       });
       // console.log(users)
     } catch (err) {
@@ -48,17 +55,24 @@ const userController = {
       if (await bcrypt.compare(password, user.password)) {
         return res.json("the password is incorrect");
       } */
-      console.log(user.password);
+      // console.log(user.password);
       const isPasswordCorrect = await bcrypt.compare(password, user.password);
-      console.log(isPasswordCorrect);
+      // console.log(isPasswordCorrect);
       if (!isPasswordCorrect) {
         return res.json({
           status: "failed",
           message: "Invalid username or password",
         });
       }
-
-      return res.json({ status: "ok", message: "success", data: user });
+      /* const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      }); */
+      return res.json({
+        status: "ok",
+        message: "success",
+        data: { name: user.name, email: user.email },
+        /* token, */
+      });
     } catch (err) {
       res.json({ status: "failed", message: err });
     }
@@ -67,8 +81,6 @@ const userController = {
     try {
       // Find all menu items
       const menuItems = await Menu.find();
-
-      // Send the menu items back to the client
       res.json(menuItems);
     } catch (error) {
       // Handle the error
@@ -76,20 +88,23 @@ const userController = {
     }
   },
   verifyToken: async (req, res, next) => {
-    const accessToken = req.headers['authorization'];
+    const accessToken = req.headers["authorization"];
 
     if (!accessToken) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     try {
-      const decoded = await jwt.verify(accessToken, require('../config/jwt.config.js').secret);
+      const decoded = await jwt.verify(
+        accessToken,
+        require("../config/jwt.config.js").secret
+      );
 
       req.user = decoded;
 
       next();
     } catch (error) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: "Unauthorized" });
     }
   },
 };

@@ -4,14 +4,6 @@ import bcrypt from "bcrypt";
 import Product from "../models/Product.js";
 
 const staffMemberController = {
-  // create: async (req, res) => {
-  //   try {
-  //     const staffMember = await Staff.create(req.body);
-  //     res.json(staffMember);
-  //   } catch (error) {
-  //     res.status(500).json(error);
-  //   }
-  // },
 
   getAllStaffMembers: async (req, res) => {
     try {
@@ -54,27 +46,42 @@ const staffMemberController = {
   },
 
   setMenu: async (req, res) => {
-    // try {
-    //   const TodayMenu = await Menu.create(req.body);
-    //   res.json(TodayMenu);
-    // } catch (error) {
-    //   res.status(500).json(error);
-    // }
-
-    console.log(req.body);
+    // console.log(req.body);
+    try {
+      const { productName, productPrice, selectedCategory, productQuantity } =
+        req.body;
+      const TodayMenu = await Product.create({
+        productName,
+        productPrice,
+        productCategory: selectedCategory,
+        productQuantity,
+        productPicture: req.file.filename,
+      });
+    return res.json({status:"ok",message:"Data added success",data:TodayMenu});
+    } catch (error) {
+    return res.status(500).json({status:"error",message:"Failed to add product"});
+    }
   },
 
   viewMenu: async (req, res) => {
     try {
       const menu = await Product.find();
+      const {
+        productName,
+        productCategory,
+        productPicture,
+        productPrice,
+        productQuantity,
+      } = menu;
+      console.log(productPicture,productName)
       if (!menu) {
         res.send("no data");
-        console.log(menu);
+        // console.log(menu);
       } else {
         res.json(menu);
       }
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   },
   registerStaff: async (req, res) => {
@@ -116,7 +123,7 @@ const staffMemberController = {
         message: "Staff registered successfully!",
       });
     } catch (err) {
-      console.log(err);
+      alert(err);
       return res.json(err);
     }
   },

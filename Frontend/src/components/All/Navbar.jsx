@@ -5,15 +5,15 @@ import {
   Button,
   IconButton,
   Collapse,
-  
 } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 export function Navbar1() {
   const [openNav, setOpenNav] = useState(false);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen((cur) => !cur);
-  const [isLoggedIn,setIsLoggedIn]=useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     window.addEventListener(
@@ -23,16 +23,16 @@ export function Navbar1() {
   }, []);
 
   const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row bg-teal-500 lg:items-center lg:gap-6">
       <Typography
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal"
+        className="p-1 bg-teal-500 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Pages
-        </a>
+        <Link to="/setmenu" className="flex items-center">
+          SetMenu
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -40,9 +40,9 @@ export function Navbar1() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
+        <Link to="/" className="flex items-center">
+          Login
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -50,9 +50,9 @@ export function Navbar1() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
+        <Link to="/register" className="flex items-center">
+          Registration
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -60,9 +60,9 @@ export function Navbar1() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <Link to="/docs" className="flex items-center">
           Docs
-        </a>
+        </Link>
       </Typography>
     </ul>
   );
@@ -73,18 +73,14 @@ export function Navbar1() {
         <div className="flex items-center justify-between text-blue-gray-900">
           {/* Logo */}
           <div className="flex ">
-          <img
-            src="/Image/icon.png"
-            className="w-16 h-10 ml-0 "
-            alt="Icon"
-          />
-          <Typography
-            as="a"
-            href="#"
-            className="ml-2 cursor-pointer py-1.5 font-extrabold "
-          >
-            Annapurna Canteen Services
-          </Typography>
+            <img src="/Image/icon.png" className="w-16 h-10 ml-0 " alt="Icon" />
+            <Typography
+              as="a"
+              href="#"
+              className="ml-2 cursor-pointer py-1.5 font-extrabold "
+            >
+              Annapurna Canteen Services
+            </Typography>
           </div>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
@@ -139,7 +135,7 @@ export function Navbar1() {
           {/* <Button variant="gradient" size="sm" fullWidth className="mb-2">
             <span>Ordrer Now</span>
           </Button> */}
-           <Button onClick={handleOpen}>Sign In</Button>
+          <Button onClick={handleOpen}>Sign In</Button>
         </Collapse>
       </Navbar>
     </div>

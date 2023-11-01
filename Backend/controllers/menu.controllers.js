@@ -17,8 +17,6 @@ export async function createProduct(req, res) {
     // console.log(req.body);
 
 
-
-
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, "../Images/images") // Define your file storage directory
@@ -29,19 +27,6 @@ export async function createProduct(req, res) {
     });
     
     const upload = multer({ storage:storage });
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     let imagePath = '';
     if (req.file) {

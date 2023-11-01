@@ -31,8 +31,7 @@ const CartDisplay = () => {
     return combinedTotal;
   };
   const handleBuyNow = () => {
-    // Implement the buy now functionality here
-    // You can clear the cart, initiate the purchase process, or navigate to a checkout page
+   
     const storedCartData = localStorage.setItem(
       "cartData",
       JSON.stringify(cartState.items)

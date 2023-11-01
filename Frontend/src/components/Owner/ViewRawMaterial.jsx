@@ -11,15 +11,20 @@ const ViewRawFoodMaterial = () => {
   }, []);
 
   return (
-    <div>
-      <h1>View Raw Food Materials</h1>
-
-      <ul>
-        {rawFoodMaterials.map((rawFoodMaterial) => (
-          <li key={rawFoodMaterial.id}>{rawFoodMaterial.name}</li>
-        ))}
-      </ul>
-    </div>
+    <div className="p-6 bg-white rounded-lg shadow-md">
+    <h1 className="text-2xl font-semibold mb-4">View Raw Food Materials</h1>
+  
+    <ul className="space-y-2">
+      {rawFoodMaterials.map((rawFoodMaterial) => (
+        <li
+          key={rawFoodMaterial.id}
+          className="flex items-center justify-between p-4 rounded-md bg-blue-50"
+        >
+          <span className="text-lg font-medium">{rawFoodMaterial.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
   );
 };
 

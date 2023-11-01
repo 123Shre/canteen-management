@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, CardFooter, Typography, Button } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../Context/CartContext";
+import axios from "axios"; // Import axios for making API requests
 
 function OrderSummary() {
   const { cartState } = useContext(CartContext);
@@ -25,6 +26,60 @@ function OrderSummary() {
       combinedTotal += calculateTotal(item);
     }
     return combinedTotal;
+  };
+
+  const makePayment = async () => {
+    const res = await initializeRazorpay();
+
+    if (!res) {
+      alert("Razorpay SDK Failed to load");
+      return;
+    }
+
+    // Prepare payment data
+    const total = calculateCombinedTotal(); 
+    const data = await axios.post("http://localhost:3001/api/razorpay/create-order", {total: calculateCombinedTotal()})
+    console.log(data);
+   // Calculate the total amount
+    const options = {
+      key: "rzp_test_ncrhyDRWZSEQbW",
+      name: "Annapurna Canteen Services",
+      currency: "INR", 
+      amount: total * 100, 
+      order_id: data.data.id, 
+      description: "Visit next Time",
+      image: "https://manuarora.in/logo.png",
+      handler: function (response) {
+        // Payment success callback
+        if (response.razorpay_payment.id) {
+          alert("Payment successful!");
+        } else {
+          alert("Payment failed.");
+        }
+      },
+      prefill: {
+        name: "Annapurna Canteen Services",
+        email: "annapurnacant@gmail.com",
+        contact: "9999999999",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+
+  const initializeRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
   };
 
   return (
@@ -58,17 +113,16 @@ function OrderSummary() {
         <Typography variant="h1" color="white" className="font-normal text-2xl">
           Total: &#8377;{calculateCombinedTotal()}
         </Typography>
-        <Link to="/checkout">
-          <Button
-            size="lg"
-            color="white"
-            className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
-            ripple={false}
-            fullWidth={true}
-          >
-            Pay Now
-          </Button>
-        </Link>
+        <Button
+          size="lg"
+          color="white"
+          className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
+          ripple={false}
+          fullWidth={true}
+          onClick={makePayment}
+        >
+          Pay Now
+        </Button>
       </CardFooter>
     </Card>
   );
